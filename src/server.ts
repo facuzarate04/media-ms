@@ -13,10 +13,9 @@ app.use(helmet());
 
 app.use('/v1/audio', AudioRoutes);
 
-
-mongoose.connect(config.dbUri)
+mongoose.connect(config.mongoUrl)
     .then(() => {
-        console.log("Connected to MongoDB");
+        console.log(`Connected to MongoDB: ${config.mongoUrl}`);
     }).catch((err) => {
         console.log(err);
     });

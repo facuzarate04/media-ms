@@ -1,10 +1,11 @@
-
+import * as dotenv from 'dotenv';
+dotenv.config();
 export interface IConfig {
     appPort: number;
-    dbUri: string;
+    mongoUrl: string;
 }
 
 export const config: IConfig = {
     appPort: Number(process.env.APP_PORT) || 3000,
-    dbUri: process.env.DB_URI || "mongodb://localhost:27017/media",
+    mongoUrl: process.env.MONGO_URL || "mongodb://127.0.0.1:27017/media",
 };
