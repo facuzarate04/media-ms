@@ -1,7 +1,7 @@
-import { Model, Schema, model } from "mongoose";
+import { Model, ObjectId, Schema, isValidObjectId, model } from "mongoose";
+import { IStoreValidator } from "./AudioValidator";
 
 export interface IAudio {
-    uuid: string;
     path: string;
     extension: string;
     quality: string;
@@ -10,10 +10,6 @@ export interface IAudio {
 }
 
 const AudioSchema = new Schema({
-    uuid: {
-        type: String,
-        required: true,
-    },
     path: {
         type: String,
         required: true,
@@ -34,4 +30,31 @@ const AudioSchema = new Schema({
     },
 }, { timestamps: true });
 
-export const AudioModel: Model<IAudio> = model<IAudio>("Audio", AudioSchema);
+const AudioModel: Model<IAudio> = model<IAudio>("Audio", AudioSchema);
+
+export default class Audio {
+    public static async getAudio(id: string): Promise<IAudio|null> {
+        try {
+            if(isValidObjectId(id) === false) {
+                return Promise.resolve(null);
+            }
+            const audio = await AudioModel.findById({ _id: id});
+            if (audio) {
+                return Promise.resolve(audio);
+            }else {
+                return Promise.resolve(null);
+            }
+        } catch (error) {
+            return Promise.reject(error);
+        }
+    }
+
+    public static async storeAudio(data: IAudio): Promise<IAudio> {
+        try {
+            const audio = await AudioModel.create(data);
+            return Promise.resolve(audio);
+        } catch (error) {
+            return Promise.reject(error);
+        }
+    }
+}
