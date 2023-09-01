@@ -27,7 +27,7 @@ export default class AudioController {
                 return res.status(400)
                     .json({error: result.error.issues});
             }
-            const data = await AudioService.storeAudio(result.data);
+            const data = await AudioService.uploadAudio(result.data);
             const audio = await Audio.storeAudio(data);
             return res.status(200)
                 .json({audio: audio});

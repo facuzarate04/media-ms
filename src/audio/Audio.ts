@@ -7,6 +7,11 @@ export interface IAudio {
     quality: string;
     size?: number;
     duration?: number;
+    variants?: Variant[];
+}
+
+export type Variant = {
+    name: string;
 }
 
 const AudioSchema = new Schema({
@@ -28,6 +33,12 @@ const AudioSchema = new Schema({
     duration: {
         type: Number,
     },
+    variants: [{
+        name: {
+            type: String,
+            required: true,
+        },
+    }],
 }, { timestamps: true });
 
 const AudioModel: Model<IAudio> = model<IAudio>("Audio", AudioSchema);
